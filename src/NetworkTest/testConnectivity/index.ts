@@ -288,6 +288,16 @@ export function testConnectivity(
       .then((session: OT.Session) => checkPublishToSession(OT, session, options))
       .then(checkSubscribeToSession)
       .then((results: SubscribeToSessionResults) => checkLoggingServer(OT, results))
+      // XXX: START BARCO
+      .then((results: SubscribeToSessionResults) => {
+        // @ts-ignore
+        if (options.onSubscribe) {
+          // @ts-ignore
+          options.onSubscribe(results);
+        }
+        return results;
+      })
+      // XXX: END BARCO
       .then(onSuccess)
       .catch(onFailure);
   });
